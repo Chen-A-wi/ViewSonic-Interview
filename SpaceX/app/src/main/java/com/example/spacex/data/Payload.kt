@@ -21,9 +21,9 @@ data class Payload(
     @Json(name = "payload_id")
     val payloadId: String?,
     @Json(name = "payload_mass_kg")
-    val payloadMassKg: Int?,
+    val payloadMassKg: Double?,
     @Json(name = "payload_mass_lbs")
-    val payloadMassLbs: Int?,
+    val payloadMassLbs: Double?,
     @Json(name = "payload_type")
     val payloadType: String?,
     @Json(name = "reused")

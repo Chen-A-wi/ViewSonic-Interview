@@ -17,7 +17,7 @@ data class OrbitParams(
     @Json(name = "inclination_deg")
     val inclinationDeg: Double?,
     @Json(name = "lifespan_years")
-    val lifespanYears: Int?,
+    val lifespanYears: Double?,
     @Json(name = "longitude")
     val longitude: Double?,
     @Json(name = "mean_anomaly")
