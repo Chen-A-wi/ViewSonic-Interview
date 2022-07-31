@@ -28,11 +28,15 @@ class AllLaunchesFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initToolbar(
+            appbarBinding = binding.appbar,
+            appbarTitleResId = R.string.all_launches,
+            isShowLeftButton = false,
+        )
         observeLiveData()
     }
 
     private fun observeLiveData() {
-
         vm.apply {
             clickLiveEvent.observe(viewLifecycleOwner) { id ->
                 when (id) {
