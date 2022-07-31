@@ -18,15 +18,15 @@ class AllLaunchesViewModel(
 ) : BaseViewModel() {
     val clickLiveEvent = SingleLiveEvent<Int>()
 
-    fun onClick(v: View) {
-        clickLiveEvent.postValue(v.id)
-    }
-
     init {
         getRocketLaunches()
     }
 
-    fun getRocketLaunches() {
+    fun onClick(v: View) {
+        clickLiveEvent.postValue(v.id)
+    }
+
+    private fun getRocketLaunches() {
         isLoading.postValue(true)
 
         viewModelScope.launch {
