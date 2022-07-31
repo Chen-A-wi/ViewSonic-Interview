@@ -9,15 +9,18 @@
         android:id="@+id/allLaunchesFragment"
         android:name="com.example.spacex.ui.all_launches.AllLaunchesFragment"
         android:label="fragment_all_launches"
-        tools:layout="@layout/fragment_all_launches" >
+        tools:layout="@layout/fragment_all_launches">
         <action
             android:id="@+id/action_allLaunchesFragment_to_launchDetailFragment"
-            app:destination="@id/launchDetailFragment" />
+            app:destination="@id/launchDetailFragment"
+            app:enterAnim="@anim/fragment_slide_left_enter"
+            app:popExitAnim="@anim/fragment_slide_right_exit" />
     </fragment>
+
     <fragment
         android:id="@+id/launchDetailFragment"
         android:name="com.example.spacex.ui.launch_detail.LaunchDetailFragment"
         android:label="fragment_launch_detail"
-        tools:layout="@layout/fragment_launch_detail" />
+        tools:layout="@layout/fragment_launch_detail"/>
 
 </navigation>

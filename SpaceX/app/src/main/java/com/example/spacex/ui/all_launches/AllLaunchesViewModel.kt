@@ -5,7 +5,7 @@ import com.example.spacex.common.utils.SingleLiveEvent
 import com.example.spacex.ui.base.BaseViewModel
 
 class AllLaunchesViewModel : BaseViewModel() {
-    val clickLiveEvent by lazy { SingleLiveEvent<Int>() }
+    val clickLiveEvent = SingleLiveEvent<Int>()
 
     fun onClick(v: View) {
         clickLiveEvent.postValue(v.id)
