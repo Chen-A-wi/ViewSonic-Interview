@@ -21,3 +21,13 @@ enum class ErrorType {
         fun fromCode(code: Int?): ErrorType = ErrorType::code.fromType(code, UNKNOWN_ERROR)
     }
 }
+
+enum class SortType {
+    SORT, REVERSED;
+
+    val resString
+        get() = when (this) {
+            SORT -> R.string.lb_sort_flight_number
+            REVERSED -> R.string.lb_reversed_flight_number
+        }
+}

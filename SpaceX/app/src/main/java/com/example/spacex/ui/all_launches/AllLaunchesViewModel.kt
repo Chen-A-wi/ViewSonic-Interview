@@ -2,10 +2,15 @@ package com.example.spacex.ui.all_launches
 
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.spacex.common.SortType
+import com.example.spacex.common.ext.default
 import com.example.spacex.common.utils.SchedulerProvider
 import com.example.spacex.common.utils.SingleLiveEvent
 import com.example.spacex.data.ErrorMessage
+import com.example.spacex.data.RocketDataItem
 import com.example.spacex.repository.RocketRepository
 import com.example.spacex.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.catch
@@ -17,6 +22,10 @@ class AllLaunchesViewModel(
     private val scheduler: SchedulerProvider
 ) : BaseViewModel() {
     val clickLiveEvent = SingleLiveEvent<Int>()
+    val sortType = MutableLiveData(SortType.SORT)
+    val sortTypeText = MutableLiveData(SortType.SORT.resString)
+    val sortingList by lazy { MediatorLiveData<ArrayList<RocketDataItem>>().default(arrayListOf()) }
+    val reversedList by lazy { MediatorLiveData<ArrayList<RocketDataItem>>().default(arrayListOf()) }
 
     init {
         getRocketLaunches()
@@ -39,7 +48,10 @@ class AllLaunchesViewModel(
                 .collect { response ->
                     response.apply {
                         if (isSuccessful) {
-                            Log.d("=============", "${body()}")
+                            body()?.let { rocketList ->
+                                sortingList.value?.addAll(rocketList.sortedBy { it.flightNumber })
+                                reversedList.value?.addAll(sortingList.value?.reversed().orEmpty())
+                            }
                         } else {
                             errorEvent.postValue(
                                 ErrorMessage(
