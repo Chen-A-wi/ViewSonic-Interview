@@ -5,10 +5,10 @@ import android.view.View
 import androidx.lifecycle.viewModelScope
 import com.example.spacex.common.utils.SchedulerProvider
 import com.example.spacex.common.utils.SingleLiveEvent
+import com.example.spacex.data.ErrorMessage
 import com.example.spacex.repository.RocketRepository
 import com.example.spacex.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
@@ -33,16 +33,29 @@ class AllLaunchesViewModel(
             repository.getRocketLaunches()
                 .flowOn(scheduler.io())
                 .catch { e ->
-                    Log.e("API Error", e.message.orEmpty())
+                    Log.e("API Catch Error", e.message.orEmpty())
+                    errorEvent.postValue(ErrorMessage(errorMsg = e.message.orEmpty()))
                 }
                 .collect { response ->
-                    if (response.isSuccessful) {
-                        Log.d("=============", "${response.body()}")
-                    } else {
-                        Log.e("=============", response.errorBody().toString())
+                    response.apply {
+                        if (isSuccessful) {
+                            Log.d("=============", "${body()}")
+                        } else {
+                            errorEvent.postValue(
+                                ErrorMessage(
+                                    errorCode = code(),
+                                    errorMsg = errorBody().toString()
+                                )
+                            )
+
+                            Log.e(
+                                "API Error",
+                                "(${code()}) ${errorBody().toString()}"
+                            )
+                        }
                     }
-                    isLoading.postValue(false)
                 }
+            isLoading.postValue(false)
         }
     }
 }

@@ -11,7 +11,7 @@
         android:label="fragment_all_launches"
         tools:layout="@layout/fragment_all_launches">
         <action
-            android:id="@+id/action_allLaunchesFragment_to_launchDetailFragment"
+            android:id="@+id/ActionAllLaunchesFragmentToLaunchDetailFragment"
             app:destination="@id/launchDetailFragment"
             app:enterAnim="@anim/fragment_slide_left_enter"
             app:popExitAnim="@anim/fragment_slide_right_exit" />

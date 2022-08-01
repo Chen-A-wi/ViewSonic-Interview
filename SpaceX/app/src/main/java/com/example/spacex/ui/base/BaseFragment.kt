@@ -9,8 +9,10 @@ import androidx.annotation.StringRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.spacex.R
+import com.example.spacex.data.ErrorMessage
 import com.example.spacex.databinding.IncludeAppBarBinding
 import com.example.spacex.ui.MainActivity
 import kotlin.system.exitProcess
@@ -48,6 +50,25 @@ abstract class BaseFragment : Fragment() {
         }
     }
 
+    //region API Error Dialog
+    fun observeErrorEvent(errorEvent: MutableLiveData<ErrorMessage>) {
+        errorEvent.observe(viewLifecycleOwner) {
+            it?.let {
+                showErrorDialog(it)
+            }
+        }
+    }
+
+    private fun showErrorDialog(errorMessage: ErrorMessage) {
+        MaterialDialog(ctx).show {
+            title(res = R.string.alert_api_error)
+            cancelable(false)
+            message(text = errorMessage.message(ctx))
+        }.positiveButton(res = R.string.btn_confirm)
+    }
+    //endregion
+
+    //region Internet
     override fun onResume() {
         super.onResume()
         if (!checkInternet()) {
@@ -96,4 +117,5 @@ abstract class BaseFragment : Fragment() {
         act.finish()
         exitProcess(0)
     }
+    //endregion
 }

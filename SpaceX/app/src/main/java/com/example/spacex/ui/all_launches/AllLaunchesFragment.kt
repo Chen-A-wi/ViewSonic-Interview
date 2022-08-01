@@ -41,10 +41,12 @@ class AllLaunchesFragment : BaseFragment() {
             clickLiveEvent.observe(viewLifecycleOwner) { id ->
                 when (id) {
                     R.id.button -> {
-                        findNavController().navigate(R.id.action_allLaunchesFragment_to_launchDetailFragment)
+                        findNavController().navigate(R.id.ActionAllLaunchesFragmentToLaunchDetailFragment)
                     }
                 }
             }
+
+            observeErrorEvent(errorEvent)
         }
     }
 }
