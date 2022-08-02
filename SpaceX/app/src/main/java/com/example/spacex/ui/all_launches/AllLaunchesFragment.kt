@@ -12,38 +12,29 @@ import com.example.spacex.ui.all_launches.bottom_sheet_dialog.SortBottomSheetDia
 import com.example.spacex.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AllLaunchesFragment : BaseFragment() {
-    private lateinit var binding: FragmentAllLaunchesBinding
-    private val vm by viewModel<AllLaunchesViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentAllLaunchesBinding.inflate(inflater, container, false).apply {
-            vm = this@AllLaunchesFragment.vm
-            lifecycleOwner = this@AllLaunchesFragment
-        }
-        return binding.root
-    }
+class AllLaunchesFragment : BaseFragment<FragmentAllLaunchesBinding>() {
+    private val viewModel by viewModel<AllLaunchesViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding?.vm = viewModel
         initViews()
         observeLiveData()
     }
 
     private fun initViews() {
-        initToolbar(
-            appbarBinding = binding.appbar,
-            appbarTitleResId = R.string.all_launches,
-            isShowLeftButton = false,
-        )
+        binding?.apply {
+            initToolbar(
+                appbarBinding = appbar,
+                appbarTitleResId = R.string.all_launches,
+                isShowLeftButton = false,
+            )
+        }
     }
 
     private fun observeLiveData() {
-        vm.apply {
+        viewModel.apply {
             clickLiveEvent.observe(viewLifecycleOwner) { id ->
                 when (id) {
                     R.id.button -> {
@@ -53,7 +44,7 @@ class AllLaunchesFragment : BaseFragment() {
                         val bottomSheetFragment = SortBottomSheetDialog(
                             sortType.value ?: SortType.SORT
                         ) { sortType ->
-                            vm.sortType.value = sortType
+                            viewModel.sortType.value = sortType
                             sortTypeText.value = sortType.resString
                         }
                         bottomSheetFragment.show(

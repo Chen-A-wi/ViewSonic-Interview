@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.example.spacex.ui.base.BaseBottomSheetFragment
+import com.example.spacex.ui.base.BaseFragment
 import java.lang.reflect.ParameterizedType
 
 internal fun <V : ViewDataBinding> Class<*>.getBinding(
@@ -21,6 +22,13 @@ internal fun <V : ViewDataBinding> Class<*>.getBinding(
     } catch (ex: Exception) {
         throw RuntimeException("The ViewBinding inflate function has been changed.", ex)
     }
+}
+
+internal fun <V : ViewDataBinding> BaseFragment<V>.getBinding(
+    inflater: LayoutInflater,
+    container: ViewGroup?
+): V {
+    return findClass().getBinding(inflater, container)
 }
 
 internal fun <V : ViewDataBinding> BaseBottomSheetFragment<V>.getBinding(

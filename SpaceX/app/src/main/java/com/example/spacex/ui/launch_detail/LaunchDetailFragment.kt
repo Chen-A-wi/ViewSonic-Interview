@@ -9,28 +9,23 @@ import com.example.spacex.databinding.FragmentLaunchDetailBinding
 import com.example.spacex.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LaunchDetailFragment : BaseFragment() {
-    private lateinit var binding: FragmentLaunchDetailBinding
-    private val vm by viewModel<LaunchDetailViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentLaunchDetailBinding.inflate(inflater, container, false).apply {
-            vm = this@LaunchDetailFragment.vm
-            lifecycleOwner = this@LaunchDetailFragment
-        }
-        return binding.root
-    }
+class LaunchDetailFragment : BaseFragment<FragmentLaunchDetailBinding>() {
+    private val viewModel by viewModel<LaunchDetailViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initToolbar(
-            appbarBinding = binding.appbar,
-            appbarTitleResId = R.string.launch_detail,
-            isShowLeftButton = true,
-        )
+        binding?.vm = viewModel
+        initViews()
+    }
+
+    private fun initViews() {
+        binding?.apply {
+            initToolbar(
+                appbarBinding = appbar,
+                appbarTitleResId = R.string.launch_detail,
+                isShowLeftButton = true,
+            )
+        }
     }
 }
