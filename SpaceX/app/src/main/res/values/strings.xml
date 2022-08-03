@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">SpaceX</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="empty" />
     <string name="launch_detail">Launch Detail</string>
     <string name="all_launches">All Launches</string>
@@ -11,6 +9,7 @@
     <string name="lb_sort_flight_number">Flight number: newest</string>
     <string name="lb_reversed_flight_number">Flight number: oldest</string>
     <string name="lb_api_unknown_error">Unknown error</string>
+    <string name="cp_flight_number">Flight %s</string>
     <string name="btn_confirm">Confirm</string>
     <string name="btn_cancel">Cancel</string>
 </resources>

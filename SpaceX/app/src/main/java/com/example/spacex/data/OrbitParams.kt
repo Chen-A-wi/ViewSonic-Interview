@@ -1,9 +1,12 @@
 package com.example.spacex.data
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class OrbitParams(
     @Json(name = "apoapsis_km")
@@ -36,4 +39,4 @@ data class OrbitParams(
     val regime: String?,
     @Json(name = "semi_major_axis_km")
     val semiMajorAxisKm: Double?
-)
+) : Parcelable

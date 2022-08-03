@@ -26,24 +26,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{v -> vm.onClick(v)}"
-            android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <TextView
             android:id="@+id/tvSort"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawablePadding="5dp"
+            android:onClick="@{v -> vm.onClick(v)}"
             android:padding="8dp"
             android:text="@{vm.sortTypeText}"
-            android:onClick="@{v -> vm.onClick(v)}"
             android:textSize="20sp"
             app:drawableLeftCompat="@drawable/ic_sort_24px"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +50,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSort" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvLaunchesList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vDivider"
+            tools:listitem="@layout/item_launch" />
 
         <include
             android:id="@+id/includeLoadingView"

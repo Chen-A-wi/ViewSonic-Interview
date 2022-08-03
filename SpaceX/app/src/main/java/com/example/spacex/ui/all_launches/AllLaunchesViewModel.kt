@@ -7,35 +7,43 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.spacex.common.SortType
 import com.example.spacex.common.ext.default
+import com.example.spacex.common.utils.safeLet
 import com.example.spacex.common.utils.SchedulerProvider
 import com.example.spacex.common.utils.SingleLiveEvent
 import com.example.spacex.data.ErrorMessage
 import com.example.spacex.data.RocketDataItem
 import com.example.spacex.repository.RocketRepository
 import com.example.spacex.ui.base.BaseViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
+@OptIn(FlowPreview::class)
 class AllLaunchesViewModel(
     private val repository: RocketRepository,
     private val scheduler: SchedulerProvider
 ) : BaseViewModel() {
     val clickLiveEvent = SingleLiveEvent<Int>()
-    val sortType = MutableLiveData(SortType.SORT)
     val sortTypeText = MutableLiveData(SortType.SORT.resString)
-    val sortingList by lazy { MediatorLiveData<ArrayList<RocketDataItem>>().default(arrayListOf()) }
-    val reversedList by lazy { MediatorLiveData<ArrayList<RocketDataItem>>().default(arrayListOf()) }
+    val notifyEvent by lazy { MutableLiveData<Unit>() }
+    val lunchesList = arrayListOf<RocketDataItem>()
+    val sortTypeFlow = MutableStateFlow(SortType.SORT)
 
     init {
-        getRocketLaunches()
+        viewModelScope.launch {
+            sortTypeFlow
+                .debounce(500)
+                .collectLatest { type ->
+                    getRocketLaunches(sortType = type)
+                }
+        }
     }
 
     fun onClick(v: View) {
         clickLiveEvent.postValue(v.id)
     }
 
-    private fun getRocketLaunches() {
+    private fun getRocketLaunches(sortType: SortType) {
         isLoading.postValue(true)
 
         viewModelScope.launch {
@@ -49,8 +57,17 @@ class AllLaunchesViewModel(
                     response.apply {
                         if (isSuccessful) {
                             body()?.let { rocketList ->
-                                sortingList.value?.addAll(rocketList.sortedBy { it.flightNumber })
-                                reversedList.value?.addAll(sortingList.value?.reversed().orEmpty())
+                                lunchesList.clear()
+
+                                when (sortType) {
+                                    SortType.SORT -> {
+                                        lunchesList.addAll(rocketList.sortedBy { it.flightNumber })
+                                    }
+                                    SortType.REVERSED -> {
+                                        lunchesList.addAll(rocketList.sortedByDescending { it.flightNumber })
+                                    }
+                                }
+                                notifyEvent.postValue(Unit)
                             }
                         } else {
                             errorEvent.postValue(
@@ -60,10 +77,7 @@ class AllLaunchesViewModel(
                                 )
                             )
 
-                            Log.e(
-                                "API Error",
-                                "(${code()}) ${errorBody().toString()}"
-                            )
+                            Log.e("API Error", "(${code()}) ${errorBody().toString()}")
                         }
                     }
                 }

@@ -1,9 +1,12 @@
 package com.example.spacex.data
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class Rocket(
     @Json(name = "fairings")
@@ -18,4 +21,4 @@ data class Rocket(
     val rocketType: String?,
     @Json(name = "second_stage")
     val secondStage: SecondStage?
-)
+) : Parcelable

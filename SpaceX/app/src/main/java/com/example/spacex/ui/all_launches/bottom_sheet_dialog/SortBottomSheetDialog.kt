@@ -10,7 +10,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SortBottomSheetDialog(
     private val sortType: SortType,
-    private val radioClickEvent: ((sortType: SortType) -> Unit)
+    private val radioClickEvent: ((sortType: SortType) -> Unit)? = null,
 ) : BaseBottomSheetFragment<BottomSheetDialogSortBinding>() {
     private val viewModel by viewModel<SortBottomSheetDialogViewModel>()
 
@@ -26,8 +26,8 @@ class SortBottomSheetDialog(
         viewModel.apply {
             clickLiveEvent.observe(viewLifecycleOwner) { id ->
                 when (id) {
-                    R.id.rbtnSort -> radioClickEvent.invoke(SortType.SORT)
-                    R.id.rbtnReversed -> radioClickEvent.invoke(SortType.REVERSED)
+                    R.id.rbtnSort -> radioClickEvent?.invoke(SortType.SORT)
+                    R.id.rbtnReversed -> radioClickEvent?.invoke(SortType.REVERSED)
                 }
             }
         }
