@@ -4,7 +4,7 @@ import android.util.Log
 import com.example.spacex.data.RocketDataItem
 import com.example.spacex.ui.base.BaseViewModel
 
-class LaunchDetailViewModel(private val rocketDataItem: RocketDataItem) : BaseViewModel() {
+class LaunchDetailViewModel(rocketDataItem: RocketDataItem) : BaseViewModel() {
     init {
         Log.d("============", "$rocketDataItem")
     }

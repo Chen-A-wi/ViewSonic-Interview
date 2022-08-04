@@ -39,7 +39,7 @@ android {
     }
 
     lint {
-        disable 'CheckResult', 'NotifyDataSetChanged'
+        disable 'NotifyDataSetChanged'
     }
 }
 
