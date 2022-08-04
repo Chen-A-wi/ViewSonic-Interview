@@ -1,50 +1,70 @@
 package com.example.spacex.ui.all_launches
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.spacex.R
 import com.example.spacex.databinding.FragmentAllLaunchesBinding
+import com.example.spacex.ui.all_launches.bottom_sheet_dialog.SortBottomSheetDialog
+import com.example.spacex.ui.all_launches.launches_list.LaunchesListAdapter
 import com.example.spacex.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AllLaunchesFragment : BaseFragment() {
-    private lateinit var binding: FragmentAllLaunchesBinding
-    private val vm by viewModel<AllLaunchesViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentAllLaunchesBinding.inflate(inflater, container, false).apply {
-            vm = this@AllLaunchesFragment.vm
-            lifecycleOwner = this@AllLaunchesFragment
-        }
-        return binding.root
-    }
+class AllLaunchesFragment : BaseFragment<FragmentAllLaunchesBinding>() {
+    private val viewModel by viewModel<AllLaunchesViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initToolbar(
-            appbarBinding = binding.appbar,
-            appbarTitleResId = R.string.all_launches,
-            isShowLeftButton = false,
-        )
+        binding?.vm = viewModel
+        initViews()
         observeLiveData()
     }
 
+    private fun initViews() {
+        binding?.apply {
+            initToolbar(
+                appbarBinding = appbar,
+                appbarTitleResId = R.string.all_launches,
+                isShowLeftButton = false,
+            )
+
+            rcvLaunchesList.adapter = LaunchesListAdapter(
+                rocketList = viewModel.lunchesList
+            ) { itemData ->
+                findNavController().navigate(
+                    AllLaunchesFragmentDirections.actionAllLaunchesFragmentToLaunchDetailFragment(
+                        argRocketDataItem = itemData
+                    )
+                )
+            }
+        }
+    }
+
     private fun observeLiveData() {
-        vm.apply {
+        viewModel.apply {
             clickLiveEvent.observe(viewLifecycleOwner) { id ->
                 when (id) {
-                    R.id.button -> {
-                        findNavController().navigate(R.id.action_allLaunchesFragment_to_launchDetailFragment)
+                    R.id.tvSort -> {
+                        val bottomSheetFragment = SortBottomSheetDialog(
+                            sortTypeFlow.value
+                        ) { sortType ->
+                            sortTypeText.value = sortType.resString
+                            sortTypeFlow.value = sortType
+                        }
+                        bottomSheetFragment.show(
+                            this@AllLaunchesFragment.childFragmentManager,
+                            bottomSheetFragment.tag
+                        )
                     }
                 }
             }
+
+            notifyEvent.observe(viewLifecycleOwner) {
+                binding?.rcvLaunchesList?.adapter?.notifyDataSetChanged()
+            }
+
+            observeErrorEvent(errorEvent)
         }
     }
 }

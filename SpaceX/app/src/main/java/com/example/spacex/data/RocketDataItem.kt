@@ -1,8 +1,11 @@
 package com.example.spacex.data
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class RocketDataItem(
     @Json(name = "details")
@@ -65,4 +68,4 @@ data class RocketDataItem(
     val timeline: Timeline?,
     @Json(name = "upcoming")
     val upcoming: Boolean?
-)
+) : Parcelable

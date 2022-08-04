@@ -6,8 +6,10 @@ import com.example.spacex.common.MoshiArrayListJsonAdapter
 import com.example.spacex.common.utils.AppSchedulerProvider
 import com.example.spacex.common.utils.LoggerInterceptor
 import com.example.spacex.common.utils.SchedulerProvider
+import com.example.spacex.data.RocketDataItem
 import com.example.spacex.repository.RocketRepository
 import com.example.spacex.ui.all_launches.AllLaunchesViewModel
+import com.example.spacex.ui.all_launches.bottom_sheet_dialog.SortBottomSheetDialogViewModel
 import com.example.spacex.ui.launch_detail.LaunchDetailViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -21,7 +23,8 @@ import java.util.concurrent.TimeUnit
 
 val viewModelModule = module {
     viewModel { AllLaunchesViewModel(get(), get()) }
-    viewModel { LaunchDetailViewModel() }
+    viewModel { (rocketDataItem: RocketDataItem) -> LaunchDetailViewModel(rocketDataItem) }
+    viewModel { SortBottomSheetDialogViewModel() }
 }
 
 val schedulerModule = module {

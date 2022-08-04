@@ -2,47 +2,86 @@ package com.example.spacex.ui.all_launches
 
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.spacex.common.SortType
+import com.example.spacex.common.ext.default
+import com.example.spacex.common.utils.safeLet
 import com.example.spacex.common.utils.SchedulerProvider
 import com.example.spacex.common.utils.SingleLiveEvent
+import com.example.spacex.data.ErrorMessage
+import com.example.spacex.data.RocketDataItem
 import com.example.spacex.repository.RocketRepository
 import com.example.spacex.ui.base.BaseViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
+@OptIn(FlowPreview::class)
 class AllLaunchesViewModel(
     private val repository: RocketRepository,
     private val scheduler: SchedulerProvider
 ) : BaseViewModel() {
     val clickLiveEvent = SingleLiveEvent<Int>()
+    val sortTypeText = MutableLiveData(SortType.SORT.resString)
+    val notifyEvent by lazy { MutableLiveData<Unit>() }
+    val lunchesList = arrayListOf<RocketDataItem>()
+    val sortTypeFlow = MutableStateFlow(SortType.SORT)
 
     init {
-        getRocketLaunches()
+        viewModelScope.launch {
+            sortTypeFlow
+                .debounce(500)
+                .collectLatest { type ->
+                    getRocketLaunches(sortType = type)
+                }
+        }
     }
 
     fun onClick(v: View) {
         clickLiveEvent.postValue(v.id)
     }
 
-    private fun getRocketLaunches() {
+    private fun getRocketLaunches(sortType: SortType) {
         isLoading.postValue(true)
 
         viewModelScope.launch {
             repository.getRocketLaunches()
                 .flowOn(scheduler.io())
                 .catch { e ->
-                    Log.e("API Error", e.message.orEmpty())
+                    Log.e("API Catch Error", e.message.orEmpty())
+                    errorEvent.postValue(ErrorMessage(errorMsg = e.message.orEmpty()))
                 }
                 .collect { response ->
-                    if (response.isSuccessful) {
-                        Log.d("=============", "${response.body()}")
-                    } else {
-                        Log.e("=============", response.errorBody().toString())
+                    response.apply {
+                        if (isSuccessful) {
+                            body()?.let { rocketList ->
+                                lunchesList.clear()
+
+                                when (sortType) {
+                                    SortType.SORT -> {
+                                        lunchesList.addAll(rocketList.sortedBy { it.flightNumber })
+                                    }
+                                    SortType.REVERSED -> {
+                                        lunchesList.addAll(rocketList.sortedByDescending { it.flightNumber })
+                                    }
+                                }
+                                notifyEvent.postValue(Unit)
+                            }
+                        } else {
+                            errorEvent.postValue(
+                                ErrorMessage(
+                                    errorCode = code(),
+                                    errorMsg = errorBody().toString()
+                                )
+                            )
+
+                            Log.e("API Error", "(${code()}) ${errorBody().toString()}")
+                        }
                     }
-                    isLoading.postValue(false)
                 }
+            isLoading.postValue(false)
         }
     }
 }
