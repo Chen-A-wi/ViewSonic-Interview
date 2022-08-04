@@ -20,7 +20,6 @@ import com.example.spacex.common.ext.getBinding
 import com.example.spacex.data.ErrorMessage
 import com.example.spacex.databinding.IncludeAppBarBinding
 import com.example.spacex.ui.MainActivity
-import kotlin.system.exitProcess
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     private var _binding: T? = null
@@ -90,15 +89,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     }
     //endregion
 
-    //region Internet
-    override fun onResume() {
-        super.onResume()
-        if (!checkInternet()) {
-            showPleaseInternetDialog()
-        }
-    }
-
-    private fun checkInternet(): Boolean {
+    fun checkInternet(): Boolean {
         val connectivityManager =
             ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities =
@@ -121,23 +112,4 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         }
         return false
     }
-
-    private fun showPleaseInternetDialog() {
-        MaterialDialog(ctx).show {
-            cancelable(true)
-            message(text = context.getString(R.string.alert_check_internet_msg))
-        }.positiveButton(res = R.string.btn_confirm) {
-            if (!checkInternet()) {
-                closeApp()
-            }
-        }.negativeButton(res = R.string.btn_cancel) {
-            closeApp()
-        }
-    }
-
-    private fun closeApp() {
-        act?.finish()
-        exitProcess(0)
-    }
-    //endregion
 }

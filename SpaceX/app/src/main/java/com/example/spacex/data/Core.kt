@@ -1,6 +1,5 @@
 package com.example.spacex.data
 
-
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -29,4 +28,4 @@ data class Core(
     val legs: Boolean?,
     @Json(name = "reused")
     val reused: Boolean?
-): Parcelable
+) : Parcelable

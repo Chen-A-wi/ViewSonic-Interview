@@ -1,11 +1,7 @@
 package com.example.spacex.common
 
-import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.*
 import com.squareup.moshi.JsonAdapter.Factory
-import com.squareup.moshi.JsonReader
-import com.squareup.moshi.JsonWriter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import java.io.IOException
 import java.lang.reflect.Type
 

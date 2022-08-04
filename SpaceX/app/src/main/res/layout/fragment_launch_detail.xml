@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -25,18 +26,145 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <include
-            android:id="@+id/includeLoadingView"
-            layout="@layout/include_loading_view"
-            android:layout_width="match_parent"
+        <ScrollView
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appbar" />
+            app:layout_constraintTop_toBottomOf="@+id/appbar">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgRocket"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="@null"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toTopOf="@+id/tvFlightNumTitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:src="@{vm.imgUrl}"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/tvFlightNumTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/lb_flight_number"
+                    app:layout_constraintBottom_toTopOf="@+id/tvFlightNum"
+                    app:layout_constraintEnd_toEndOf="@+id/imgRocket"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/imgRocket"
+                    app:layout_constraintTop_toBottomOf="@+id/imgRocket" />
+
+                <TextView
+                    android:id="@+id/tvFlightNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{vm.flightNo}"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toTopOf="@+id/tvMissionNameTitle"
+                    app:layout_constraintEnd_toEndOf="@+id/tvFlightNumTitle"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/tvFlightNumTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/tvFlightNumTitle"
+                    tools:text="1" />
+
+                <TextView
+                    android:id="@+id/tvMissionNameTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/lb_mission_name"
+                    app:layout_constraintBottom_toTopOf="@+id/tvMissionName"
+                    app:layout_constraintEnd_toEndOf="@+id/tvFlightNum"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/tvFlightNum"
+                    app:layout_constraintTop_toBottomOf="@+id/tvFlightNum" />
+
+                <TextView
+                    android:id="@+id/tvMissionName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{vm.missionName}"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/tvLaunchLocalDateTitle"
+                    app:layout_constraintEnd_toEndOf="@+id/tvMissionNameTitle"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/tvMissionNameTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMissionNameTitle"
+                    tools:text="FalconSat" />
+
+                <TextView
+                    android:id="@+id/tvLaunchLocalDateTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/lb_launch_local_date"
+                    app:layout_constraintBottom_toTopOf="@+id/tvLaunchLocalDate"
+                    app:layout_constraintEnd_toEndOf="@+id/tvMissionName"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/tvMissionName"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMissionName" />
+
+                <TextView
+                    android:id="@+id/tvLaunchLocalDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{vm.launchLocalDate}"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/tvLaunchSiteTitle"
+                    app:layout_constraintEnd_toEndOf="@+id/tvLaunchLocalDateTitle"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/tvLaunchLocalDateTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLaunchLocalDateTitle"
+                    tools:text="25/03/2006 6:30:00" />
+
+                <TextView
+                    android:id="@+id/tvLaunchSiteTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/lb_launch_site"
+                    app:layout_constraintBottom_toTopOf="@+id/tvLaunchSite"
+                    app:layout_constraintEnd_toEndOf="@+id/tvLaunchLocalDate"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/tvLaunchLocalDate"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLaunchLocalDate" />
+
+                <TextView
+                    android:id="@+id/tvLaunchSite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="@{vm.launchSite}"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tvLaunchSiteTitle"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/tvLaunchSiteTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLaunchSiteTitle"
+                    tools:text="Kwajalein Atoll" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
