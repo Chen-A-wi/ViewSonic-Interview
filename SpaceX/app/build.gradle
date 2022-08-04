@@ -39,7 +39,7 @@ android {
     }
 
     lint {
-        disable 'CheckResult', 'NotifyDataSetChanged'
+        disable 'NotifyDataSetChanged'
     }
 }
 
@@ -58,11 +58,14 @@ dependencies {
     //endregion
 
     //region UI
-    implementation 'com.airbnb.android:lottie:5.1.1'
+    implementation 'com.airbnb.android:lottie:5.2.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
     implementation "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
     implementation "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
+    implementation "com.github.bumptech.glide:glide:${versions.glide}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${versions.glide}"
+    implementation "com.github.bumptech.glide:okhttp3-integration:${versions.glide}"
     //endregion
 
     //region Network

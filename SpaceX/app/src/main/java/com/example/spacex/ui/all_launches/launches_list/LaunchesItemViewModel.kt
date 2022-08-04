@@ -1,19 +1,19 @@
 package com.example.spacex.ui.all_launches.launches_list
 
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.example.spacex.ui.base.BindingHolder
+import androidx.lifecycle.MutableLiveData
+import com.example.spacex.data.RocketDataItem
+import com.example.spacex.ui.base.BaseViewModel
 
-class LaunchesItemViewModel : RecyclerView.Adapter<BindingHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder {
-        TODO("Not yet implemented")
-    }
+class LaunchesItemViewModel(
+    itemData: RocketDataItem, private val onItemClick: (() -> Unit)
+) : BaseViewModel() {
+    val flightNo = MutableLiveData(itemData.flightNumber.toString())
+    val imgUrl = MutableLiveData(itemData.links?.missionPatchSmall.orEmpty())
+    val missionName = MutableLiveData(itemData.missionName)
+    val launchDate = MutableLiveData(itemData.launchDateUtc)
 
-    override fun onBindViewHolder(holder: BindingHolder, position: Int) {
-        TODO("Not yet implemented")
-    }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+    fun onClick() {
+        onItemClick.invoke()
     }
 }

@@ -1,9 +1,12 @@
 package com.example.spacex.data
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class Payload(
     @Json(name = "customers")
@@ -13,7 +16,7 @@ data class Payload(
     @Json(name = "nationality")
     val nationality: String?,
     @Json(name = "norad_id")
-    val noradId: List<Any>?,
+    val noradId: List<Int>?,
     @Json(name = "orbit")
     val orbit: String?,
     @Json(name = "orbit_params")
@@ -28,4 +31,4 @@ data class Payload(
     val payloadType: String?,
     @Json(name = "reused")
     val reused: Boolean?
-)
+) : Parcelable

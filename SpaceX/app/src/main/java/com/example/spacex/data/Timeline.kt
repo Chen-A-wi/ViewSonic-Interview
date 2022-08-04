@@ -1,9 +1,12 @@
 package com.example.spacex.data
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class Timeline(
     @Json(name = "beco")
@@ -66,4 +69,4 @@ data class Timeline(
     val stage2Rp1Loading: Int?,
     @Json(name = "webcast_liftoff")
     val webcastLiftoff: Int?
-)
+) : Parcelable
