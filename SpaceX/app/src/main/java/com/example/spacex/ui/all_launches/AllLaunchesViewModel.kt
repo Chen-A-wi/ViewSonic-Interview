@@ -2,12 +2,9 @@ package com.example.spacex.ui.all_launches
 
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.spacex.common.SortType
-import com.example.spacex.common.ext.default
-import com.example.spacex.common.utils.safeLet
 import com.example.spacex.common.utils.SchedulerProvider
 import com.example.spacex.common.utils.SingleLiveEvent
 import com.example.spacex.data.ErrorMessage
@@ -43,15 +40,14 @@ class AllLaunchesViewModel(
         clickLiveEvent.postValue(v.id)
     }
 
-    private fun getRocketLaunches(sortType: SortType) {
+    fun getRocketLaunches(sortType: SortType) {
         isLoading.postValue(true)
 
         viewModelScope.launch {
             repository.getRocketLaunches()
                 .flowOn(scheduler.io())
                 .catch { e ->
-                    Log.e("API Catch Error", e.message.orEmpty())
-                    errorEvent.postValue(ErrorMessage(errorMsg = e.message.orEmpty()))
+                    Log.e("[API Catch Error]", e.message.orEmpty())
                 }
                 .collect { response ->
                     response.apply {
@@ -77,7 +73,7 @@ class AllLaunchesViewModel(
                                 )
                             )
 
-                            Log.e("API Error", "(${code()}) ${errorBody().toString()}")
+                            Log.e("[API Error]", "(${code()}) ${errorBody().toString()}")
                         }
                     }
                 }

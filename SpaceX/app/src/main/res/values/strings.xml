@@ -4,7 +4,7 @@
     <string name="launch_detail">Launch Detail</string>
     <string name="all_launches">All Launches</string>
     <string name="alert_api_error">API Error</string>
-    <string name="alert_check_internet_msg">Please check internet, if check again still doesn\'t have internet will close app.</string>
+    <string name="alert_check_internet_msg">Please check the internet, if checking again has the same issue will close the app.</string>
     <string name="bottom_dialog_title">Sort by:</string>
     <string name="lb_sort_flight_number">Flight number: newest</string>
     <string name="lb_reversed_flight_number">Flight number: oldest</string>

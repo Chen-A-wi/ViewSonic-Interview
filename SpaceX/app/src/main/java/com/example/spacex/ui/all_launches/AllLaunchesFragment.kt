@@ -3,12 +3,14 @@ package com.example.spacex.ui.all_launches
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.spacex.R
 import com.example.spacex.databinding.FragmentAllLaunchesBinding
 import com.example.spacex.ui.all_launches.bottom_sheet_dialog.SortBottomSheetDialog
 import com.example.spacex.ui.all_launches.launches_list.LaunchesListAdapter
 import com.example.spacex.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.system.exitProcess
 
 class AllLaunchesFragment : BaseFragment<FragmentAllLaunchesBinding>() {
     private val viewModel by viewModel<AllLaunchesViewModel>()
@@ -67,4 +69,32 @@ class AllLaunchesFragment : BaseFragment<FragmentAllLaunchesBinding>() {
             observeErrorEvent(errorEvent)
         }
     }
+
+    //region Internet
+    override fun onResume() {
+        super.onResume()
+        if (!checkInternet()) {
+            showPleaseInternetDialog()
+        }
+    }
+
+    private fun showPleaseInternetDialog() {
+        MaterialDialog(ctx).show {
+            cancelable(true)
+            message(text = context.getString(R.string.alert_check_internet_msg))
+        }.positiveButton(res = R.string.btn_confirm) {
+            if (!checkInternet()) {
+                closeApp()
+            }
+            viewModel.apply { getRocketLaunches(sortType = sortTypeFlow.value) }
+        }.negativeButton(res = R.string.btn_cancel) {
+            closeApp()
+        }
+    }
+
+    private fun closeApp() {
+        act?.finish()
+        exitProcess(0)
+    }
+    //endregion
 }
