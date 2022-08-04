@@ -43,7 +43,10 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
 
         if (hasActiveObservers()) {
-            Log.d("SingleLiveEvent","Multiple observers registered but only one will be notified of changes.")
+            Log.d(
+                "SingleLiveEvent",
+                "Multiple observers registered but only one will be notified of changes."
+            )
         }
 
         // Observe the internal MutableLiveData
