@@ -9,6 +9,10 @@
     <string name="lb_sort_flight_number">Flight number: newest</string>
     <string name="lb_reversed_flight_number">Flight number: oldest</string>
     <string name="lb_api_unknown_error">Unknown error</string>
+    <string name="lb_flight_number">Flight number</string>
+    <string name="lb_mission_name">Mission name</string>
+    <string name="lb_launch_local_date">Launch Local date</string>
+    <string name="lb_launch_site">Launch site</string>
     <string name="cp_flight_number">Flight %s</string>
     <string name="btn_confirm">Confirm</string>
     <string name="btn_cancel">Cancel</string>

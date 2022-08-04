@@ -12,7 +12,8 @@ class LaunchesItemViewModel(
     val flightNo = MutableLiveData(itemData.flightNumber.toString())
     val imgUrl = MutableLiveData(itemData.links?.missionPatchSmall.orEmpty())
     val missionName = MutableLiveData(itemData.missionName)
-    val launchDate = MutableLiveData(itemData.launchDateLocal?.localDateTimeFromISO?.text().orEmpty())
+    val launchDate =
+        MutableLiveData(itemData.launchDateLocal?.localDateTimeFromISO?.text().orEmpty())
 
     fun onClick() {
         onItemClick.invoke()
