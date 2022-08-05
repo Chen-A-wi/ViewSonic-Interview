@@ -32,7 +32,7 @@
 - Minimum SDK level 23
 - 100% Kotlin
 - 使用 Koin 進行 injection
-- 使用 Navigation
+- 使用 Navigation 管理 Fragment
 - 遵從 Git Flow 原則
 - Jetpack
   - Lifecycle
