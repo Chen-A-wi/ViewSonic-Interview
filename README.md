@@ -42,4 +42,4 @@
 - 使用 Coroutines & Flow 處理 API 及 Sort switch
 - 使用 Airbnb Lottie 處理 Loading 動畫
 - 使用 Moshi 解析 Json
-- 使用 Truth, Junit 撰寫 Unit 
+- 使用 Truth, Junit 撰寫 Unit Test
