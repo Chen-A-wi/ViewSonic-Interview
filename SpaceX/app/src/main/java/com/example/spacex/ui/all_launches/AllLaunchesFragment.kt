@@ -31,6 +31,19 @@ class AllLaunchesFragment : BaseFragment<FragmentAllLaunchesBinding>() {
                 isShowLeftButton = false,
             )
 
+            tvSort.setOnClickListener {
+                val bottomSheetFragment = SortBottomSheetDialog(
+                    viewModel.sortTypeFlow.value
+                ) { sortType ->
+                    viewModel.sortTypeText.value = sortType.resString
+                    viewModel.sortTypeFlow.value = sortType
+                }
+                bottomSheetFragment.show(
+                    this@AllLaunchesFragment.childFragmentManager,
+                    bottomSheetFragment.tag
+                )
+            }
+
             rcvLaunchesList.adapter = LaunchesListAdapter(
                 rocketList = viewModel.lunchesList
             ) { itemData ->
@@ -45,23 +58,6 @@ class AllLaunchesFragment : BaseFragment<FragmentAllLaunchesBinding>() {
 
     private fun observeLiveData() {
         viewModel.apply {
-            clickLiveEvent.observe(viewLifecycleOwner) { id ->
-                when (id) {
-                    R.id.tvSort -> {
-                        val bottomSheetFragment = SortBottomSheetDialog(
-                            sortTypeFlow.value
-                        ) { sortType ->
-                            sortTypeText.value = sortType.resString
-                            sortTypeFlow.value = sortType
-                        }
-                        bottomSheetFragment.show(
-                            this@AllLaunchesFragment.childFragmentManager,
-                            bottomSheetFragment.tag
-                        )
-                    }
-                }
-            }
-
             notifyEvent.observe(viewLifecycleOwner) {
                 binding?.rcvLaunchesList?.adapter?.notifyDataSetChanged()
             }
