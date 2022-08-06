@@ -52,6 +52,9 @@ class AllLaunchesViewModel(
                 .flowOn(scheduler.io())
                 .catch { e ->
                     Log.e("[API Catch Error]", e.message.orEmpty())
+                    errorEvent.postValue(
+                        ErrorMessage(errorMsg = e.message.orEmpty())
+                    )
                 }
                 .collect { response ->
                     response.apply {
@@ -68,8 +71,7 @@ class AllLaunchesViewModel(
                         } else {
                             errorEvent.postValue(
                                 ErrorMessage(
-                                    errorCode = code(),
-                                    errorMsg = errorBody().toString()
+                                    errorCode = code(), errorMsg = errorBody().toString()
                                 )
                             )
 
