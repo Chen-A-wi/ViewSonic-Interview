@@ -1,12 +1,10 @@
 package com.example.spacex.ui.all_launches
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.spacex.common.SortType
 import com.example.spacex.common.utils.SchedulerProvider
-import com.example.spacex.common.utils.SingleLiveEvent
 import com.example.spacex.data.ErrorMessage
 import com.example.spacex.data.RocketDataItem
 import com.example.spacex.repository.RocketRepository
@@ -20,7 +18,6 @@ class AllLaunchesViewModel(
     private val repository: RocketRepository,
     private val scheduler: SchedulerProvider
 ) : BaseViewModel() {
-    val clickLiveEvent = SingleLiveEvent<Int>()
     val sortTypeText = MutableLiveData(SortType.SORT.resString)
     val notifyEvent by lazy { MutableLiveData<Unit>() }
     private val sortList = arrayListOf<RocketDataItem>()
@@ -38,10 +35,6 @@ class AllLaunchesViewModel(
                     changeLunchListData(type)
                 }
         }
-    }
-
-    fun onClick(v: View) {
-        clickLiveEvent.postValue(v.id)
     }
 
     fun getRocketLaunches(sortType: SortType) {

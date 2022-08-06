@@ -31,7 +31,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawablePadding="5dp"
-            android:onClick="@{v -> vm.onClick(v)}"
             android:padding="8dp"
             android:text="@{vm.sortTypeText}"
             android:textSize="20sp"
