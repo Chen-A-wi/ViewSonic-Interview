@@ -38,16 +38,14 @@ class AllLaunchesViewModel(
     }
 
     fun getRocketLaunches(sortType: SortType) {
-        isLoading.postValue(true)
+        isLoading.value = true
 
         viewModelScope.launch {
             repository.getRocketLaunches()
                 .flowOn(scheduler.io())
                 .catch { e ->
                     Log.e("[API Catch Error]", e.message.orEmpty())
-                    errorEvent.postValue(
-                        ErrorMessage(errorMsg = e.message.orEmpty())
-                    )
+                    errorEvent.value = ErrorMessage(errorMsg = e.message.orEmpty())
                 }
                 .collect { response ->
                     response.apply {
@@ -62,17 +60,15 @@ class AllLaunchesViewModel(
                                 changeLunchListData(type = sortType)
                             }
                         } else {
-                            errorEvent.postValue(
-                                ErrorMessage(
-                                    errorCode = code(), errorMsg = errorBody().toString()
-                                )
+                            errorEvent.value = ErrorMessage(
+                                errorCode = code(), errorMsg = errorBody().toString()
                             )
 
                             Log.e("[API Error]", "(${code()}) ${errorBody().toString()}")
                         }
                     }
                 }
-            isLoading.postValue(false)
+            isLoading.value = false
         }
     }
 
@@ -90,6 +86,6 @@ class AllLaunchesViewModel(
             }
         )
 
-        notifyEvent.postValue(Unit)
+        notifyEvent.value = Unit
     }
 }
