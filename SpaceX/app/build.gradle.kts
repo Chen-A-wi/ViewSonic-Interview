@@ -38,6 +38,7 @@ android {
     }
 
     lint {
+        abortOnError = true
         disable.add("NotifyDataSetChanged")
     }
 }
